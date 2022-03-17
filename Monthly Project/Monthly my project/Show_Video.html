@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Video Prototype</title>
+   
+    <script src="../Scripts/jquery-1.12.4.min.js"></script>
+
+    <style>
+        video {
+            width: 360px;
+            height: 260px;
+        }
+
+            video::cue {
+                white-space: pre;
+            }
+
+            video::cue(.man) {
+                color: yellow
+            }
+            body{
+                background-color:coral;
+            }
+
+            #container{
+                background-color:#187ae4;
+                width:900px;
+                height:700px;
+                margin-right:auto;
+                margin-left:auto;
+                text-align:center;
+                padding:20px;
+            }
+
+        #play {
+            background-color: darkred;
+            color: burlywood;
+            font-size: x-large;
+            text-align: center;
+            padding: 4px;
+            width: 100px;
+            font-style: italic;
+            
+        }
+
+        #btnSnapshot {
+            background-color:limegreen;
+            color:black;
+            font-size: x-large;
+            text-align: center;
+            padding: 4px;
+            width: 200px;
+            font-style: italic;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="container">
+        <video id="media" controls="controls">
+            <source src="movie.mp4" type="video/mp4">
+            <track label="English subtitles" kind="subtitles" srclang="en" src="track1.vtt" default>
+        </video>
+        <hr />
+        <button type="button" id="play">Play</button>
+        <hr />
+        <button id="btnSnapshot" type="button">Snapshot</button>
+        <hr />
+        <canvas id="myCanvas" width="360" height="240">
+            Canvas is used for drawing by javascript.
+            You need a browser that supports HTML5 canvas!
+        </canvas>
+
+        <hr />
+        <h2>Sorce will be shown here</h2><br />
+        <span id='message'></span>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#play').on('click', playStop);
+            $('#media').on('play', function () {
+                $('#play').html('Pause');
+            });
+            $('#media').on('pause', function () {
+                $('#play').html('Play');
+            });
+
+            $('#media').on('play', function () {
+                $('#message').html($('#media')[0].currentSrc);
+            });
+            $('#media').on('pause', function () {
+                $('#message').html("The video has been paused");
+            });
+
+            $("#btnSnapshot").click(function () {
+                var canvas = document.getElementById('myCanvas');
+                var video = document.getElementById('media');
+                canvas.getContext('2d').drawImage(video, 0, 0, 360, 240);
+            });
+
+        });
+        function playStop() {
+            var media = $('#media')[0];
+            if (media.paused) {
+                media.play();
+            }
+            else {
+                media.pause();
+            }
+        }
+    </script>
+</body>
+</html>
